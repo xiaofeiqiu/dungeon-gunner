@@ -1,0 +1,33 @@
+﻿<Properties StartupConfiguration="{1CAAF570-8C43-948B-0151-8D8CABE08725}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/NodeGraph/RoomNodeSO.cs">
+    <Files>
+      <File FileName="Assets/Scripts/NodeGraph/Editor/RoomNodeGraphEditor.cs" Line="119" Column="19" />
+      <File FileName="Assets/Scripts/NodeGraph/RoomNodeSO.cs" Line="18" Column="17" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="DungeonGunner" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="GameManager" expanded="True" />
+                <Node name="NodeGraph" expanded="True">
+                  <Node name="Editor" expanded="True" />
+                  <Node name="RoomNodeSO.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp-Editor PreferredExecutionTarget="455bf666-33d3-4535-bb63-8696d1148826" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="455bf666-33d3-4535-bb63-8696d1148826" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
