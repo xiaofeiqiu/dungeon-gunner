@@ -34,6 +34,49 @@
 *.VC.db
 *.VC.opendb
 
+# Visual Studio Code specific files
+.vscode/
+
+# Visual Studio specific files
+.vs/
+*.csproj.user
+*.dbmdl
+*.vcxproj.user
+*.pfx
+*.publishsettings
+*.ncrunchsolution
+*.ncrunchproject
+*.ntvs_analysis.dat
+*.njsproj
+*.suo
+*.tlb
+*.tlh
+*.sln.docstates
+*.pdb
+*.ipch
+*.opendb
+*.VC.opendb
+*.VC.db
+*.VC.VC.opendb
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows 8/10 Store app package directories and files
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+
+# Windows system file
+*.lnk
+
 # Unity auto-generated file on crash reports
 sysinfo.txt
 
@@ -43,9 +86,6 @@ sysinfo.txt
 # OS-specific files
 .DS_Store
 Thumbs.db
-
-# Temporary files created by UnityVS/MonoDevelop
-.vscode/
 
 # Exclude built project files
 Build/
