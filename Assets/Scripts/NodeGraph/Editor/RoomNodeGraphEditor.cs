@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor.Callbacks;
 using UnityEditor;
 using System;
+using System.Collections.Generic;
 
 public class RoomNodeGraphEditor : EditorWindow
 {
@@ -229,7 +230,7 @@ public class RoomNodeGraphEditor : EditorWindow
                 // if so, set child and parent node
                 if (currentRoomNodeGraph.fromNode.addChildRoomId(node.id))
                 {
-                    node.addParentRoomId(currentRoomNodeGraph.fromNode.id);
+                    node.AddParentRoomId(currentRoomNodeGraph.fromNode.id);
                 }             
             }
             clearLine();
@@ -302,7 +303,70 @@ public class RoomNodeGraphEditor : EditorWindow
         menu.AddItem(new GUIContent("Create room node"), false, createRoomNode, mousePosition);
         menu.AddSeparator("");
         menu.AddItem(new GUIContent("Select all"), false, selectAllRoomNodes);
+        menu.AddSeparator("");
+        menu.AddItem(new GUIContent("Delete links"), false, deleteLinks);
+        menu.AddItem(new GUIContent("Delete selected nodes"), false, deleteNodes);
         menu.ShowAsContext();
+    }
+
+    private void deleteNodes()
+    {
+        Queue<RoomNodeSO> queue = new Queue<RoomNodeSO>();
+
+        foreach (var node in currentRoomNodeGraph.roomNodeList)
+        {
+            if (node.isSelected && !node.roomNodeType.isEntrance)
+            {
+                queue.Enqueue(node);
+                foreach (var childId in node.childRoomNodeIDList)
+                {
+                    RoomNodeSO childNode = currentRoomNodeGraph.GetRoomNode(childId);
+                    if (childNode != null)
+                    {
+                        childNode.RemoveParentRoom(node.id);
+                    }
+                }
+
+                foreach (var parentId in node.parentRoomNodeIDList)
+                {
+                    RoomNodeSO parentNode = currentRoomNodeGraph.GetRoomNode(parentId);
+                    if (parentNode != null)
+                    {
+                        parentNode.RemoveChildRoom(node.id);
+                    }
+                }
+            }
+        }
+
+        while (queue.Count > 0)
+        {
+            RoomNodeSO node = queue.Dequeue();
+            currentRoomNodeGraph.roomNodeSODict.Remove(node.id);
+            currentRoomNodeGraph.roomNodeList.Remove(node);
+            DestroyImmediate(node, true);
+            AssetDatabase.SaveAssets();
+        }
+    }
+
+    private void deleteLinks()
+    {
+        foreach (var room in currentRoomNodeGraph.roomNodeList)
+        {
+            if (room.isSelected && room.childRoomNodeIDList.Count > 0)
+            {
+                for (int i = room.childRoomNodeIDList.Count - 1; i >= 0; i--)
+                {
+                    RoomNodeSO childRoom = currentRoomNodeGraph.GetRoomNode(room.childRoomNodeIDList[i]);
+                    if (childRoom != null && childRoom.isSelected)
+                    {
+                        room.RemoveChildRoom(childRoom.id);
+                        childRoom.RemoveParentRoom(room.id);
+                    }
+                }
+            }
+        }
+
+        clearAllSelectedRoomNodes();
     }
 
     private void selectAllRoomNodes()
