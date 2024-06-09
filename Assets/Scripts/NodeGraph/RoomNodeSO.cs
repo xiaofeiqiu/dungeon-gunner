@@ -126,11 +126,11 @@ public class RoomNodeSO : ScriptableObject
     private void processMouseLeftDragEvent(Event currentEvent)
     {
         isDragging = true;
-        DragMode(currentEvent.delta);
+        DragNode(currentEvent.delta);
         GUI.changed = true;
     }
 
-    private void DragMode(Vector2 delta)
+    public void DragNode(Vector2 delta)
     {
         rect.position += delta;
         EditorUtility.SetDirty(this);
