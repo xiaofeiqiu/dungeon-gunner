@@ -22,8 +22,8 @@ public class RoomNodeGraphEditor : EditorWindow
     [MenuItem("Window/Dungeon Editor/Room Node Graph Editor")]
     public static void ShowWindow()
     {
-         GetWindow<RoomNodeGraphEditor>("Room Node Graph Editor");
-        
+        RoomNodeGraphEditor window = GetWindow<RoomNodeGraphEditor>("Room Node Graph Editor");
+        window.Show();
     }
 
     private void OnEnable()
@@ -59,11 +59,13 @@ public class RoomNodeGraphEditor : EditorWindow
         if (roomNodeGraph != null)
         {
             currentRoomNodeGraph = roomNodeGraph;
-            GUI.changed = true;
+            ShowWindow();
+            GUI.changed = true;            
         }
     }
 
-    [OnOpenAsset(0)] // method will be called when double click asset
+    // method will be called when double click asset
+    [OnOpenAsset(0)] 
     public static bool OnDoubleClickAsset(int instanceID, int line)
     {
         // if clicked asset is not RoomNodeGraphSO return false
@@ -87,6 +89,7 @@ public class RoomNodeGraphEditor : EditorWindow
 
     private void OnGUI()
     {
+        Debug.Log("OnGUI:" + GUI.changed);
         if (currentRoomNodeGraph != null)
         {
             DrawDraggedLine();
