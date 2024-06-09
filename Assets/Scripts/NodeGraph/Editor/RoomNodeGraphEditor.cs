@@ -300,7 +300,18 @@ public class RoomNodeGraphEditor : EditorWindow
     {
         GenericMenu menu = new GenericMenu();
         menu.AddItem(new GUIContent("Create room node"), false, createRoomNode, mousePosition);
+        menu.AddSeparator("");
+        menu.AddItem(new GUIContent("Select all"), false, selectAllRoomNodes);
         menu.ShowAsContext();
+    }
+
+    private void selectAllRoomNodes()
+    {
+        foreach (var room in currentRoomNodeGraph.roomNodeList)
+        {
+            room.isSelected = true;
+        }
+        GUI.changed = true;
     }
 
     // createRoomNode will create a room node, by defautl, room type is none
