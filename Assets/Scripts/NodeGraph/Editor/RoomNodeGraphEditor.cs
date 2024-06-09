@@ -10,6 +10,7 @@ public class RoomNodeGraphEditor : EditorWindow
     private RoomNodeSO currentRoomNode;
 
     private GUIStyle roomNodeStyle;
+    private GUIStyle selectedStyle;
     private const float nodeWidth = 160f;
     private const float nodeHeight = 75f;
     private const int nodePadding = 25;
@@ -21,21 +22,46 @@ public class RoomNodeGraphEditor : EditorWindow
     [MenuItem("Window/Dungeon Editor/Room Node Graph Editor")]
     public static void ShowWindow()
     {
-        RoomNodeGraphEditor window = GetWindow<RoomNodeGraphEditor>("Room Node Graph Editor");
-        window.Show();
+         GetWindow<RoomNodeGraphEditor>("Room Node Graph Editor");
+        
     }
 
     private void OnEnable()
     {
+        // call InspectorSelectionChanged function when unity detects selection changed in unity
+        // += registers InspectorSelectionChanged function as cahnge detection callback
+        Selection.selectionChanged += inspectorSelectionChanged;
+
         roomNodeStyle = new GUIStyle();
         roomNodeStyle.normal.background = EditorGUIUtility.Load("node1") as Texture2D;
         roomNodeStyle.normal.textColor = Color.white;
         roomNodeStyle.padding = new RectOffset(nodePadding, nodePadding, nodePadding, nodePadding);
         roomNodeStyle.border = new RectOffset(nodeBorder, nodeBorder, nodeBorder, nodeBorder);
 
+        selectedStyle = new GUIStyle();
+        selectedStyle.normal.background = EditorGUIUtility.Load("node1 on") as Texture2D;
+        selectedStyle.normal.textColor = Color.white;
+        selectedStyle.padding = new RectOffset(nodePadding, nodePadding, nodePadding, nodePadding);
+        selectedStyle.border = new RectOffset(nodeBorder, nodeBorder, nodeBorder, nodeBorder);
+
+
         roomNodeTypeListSO = GameResource.Instance.RoomNodeTypeListSO;
     }
 
+    private void OnDisable()
+    {
+        Selection.selectionChanged -= inspectorSelectionChanged;
+    }
+
+    private void inspectorSelectionChanged()
+    {
+        RoomNodeGraphSO roomNodeGraph = Selection.activeObject as RoomNodeGraphSO;
+        if (roomNodeGraph != null)
+        {
+            currentRoomNodeGraph = roomNodeGraph;
+            GUI.changed = true;
+        }
+    }
 
     [OnOpenAsset(0)] // method will be called when double click asset
     public static bool OnDoubleClickAsset(int instanceID, int line)
@@ -243,6 +269,24 @@ public class RoomNodeGraphEditor : EditorWindow
         {
             showContextMenu(currentEvent.mousePosition);
         }
+        else if (currentEvent.button == 0)
+        {
+            clearLine();
+            clearAllSelectedRoomNodes();
+
+        }
+    }
+
+    private void clearAllSelectedRoomNodes()
+    {
+        foreach (RoomNodeSO node in currentRoomNodeGraph.roomNodeList)
+        {
+            if (node.isSelected)
+            {
+                node.isSelected = false;
+                GUI.changed = true;
+            }
+        }
     }
 
     /* 
@@ -259,7 +303,12 @@ public class RoomNodeGraphEditor : EditorWindow
     // createRoomNode will create a room node, by defautl, room type is none
     private void createRoomNode(object mousePositionObj)
     {
+        if (currentRoomNodeGraph.roomNodeList.Count == 0)
+        {
+            createRoomNode(new Vector2(200f, 200f), roomNodeTypeListSO.list.Find(x => x.isEntrance));
+        }
         createRoomNode(mousePositionObj, roomNodeTypeListSO.list.Find(x => x.isNone));
+        
     }
 
     // creates room node asset, and save the object under currentRoomNodeGraph obejct
@@ -286,7 +335,14 @@ public class RoomNodeGraphEditor : EditorWindow
     {
         foreach (RoomNodeSO roomNode in currentRoomNodeGraph.roomNodeList)
         {
-            roomNode.Draw(roomNodeStyle);
+            if (roomNode.isSelected)
+            {
+                roomNode.Draw(selectedStyle);
+            } else
+            {
+                roomNode.Draw(roomNodeStyle);
+            }
+            
         }
     }
 

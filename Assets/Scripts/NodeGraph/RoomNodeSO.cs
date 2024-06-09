@@ -34,10 +34,19 @@ public class RoomNodeSO : ScriptableObject
 
         EditorGUI.BeginChangeCheck();
 
-        int selected = roomNodeTypeList.list.FindIndex(x => x == roomNodeType);
-        int selection = EditorGUILayout.Popup("", selected, GetRoomNodeTypeToDisplay());
-        roomNodeType = roomNodeTypeList.list[selection];
+        // if room node has a parent, or is a entrance node, display a label else dispay a dropdown
+        if (parentRoomNodeIDList.Count > 0 || roomNodeType.isEntrance)
+        {
+            EditorGUILayout.LabelField(roomNodeType.roomNodeTypeName);
+        } else
+        {
+            // default selected
+            int selected = roomNodeTypeList.list.FindIndex(x => x == roomNodeType);
 
+            // display selections
+            int selection = EditorGUILayout.Popup("", selected, GetRoomNodeTypeToDisplay());
+            roomNodeType = roomNodeTypeList.list[selection];
+        }
         if (EditorGUI.EndChangeCheck())
         {
             EditorUtility.SetDirty(this);
