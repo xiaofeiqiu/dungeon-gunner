@@ -5,8 +5,12 @@ using UnityEngine;
 public static class Helper
 {
     /// <summary>
-    /// Empty string debug check
+    /// Checks if a string is empty and logs an error if it is.
     /// </summary>
+    /// <param name="thisObject">The object containing the field being checked.</param>
+    /// <param name="fieldName">The name of the field being checked.</param>
+    /// <param name="stringToCheck">The string value to check.</param>
+    /// <returns>True if the string is empty, false otherwise.</returns>
     public static bool ValidateCheckEmptyString(Object thisObject, string fieldName, string stringToCheck)
     {
         if (stringToCheck == "")
@@ -17,6 +21,13 @@ public static class Helper
         return false;
     }
 
+    /// <summary>
+    /// Checks if an enumerable contains null values or is empty and logs an error if it does.
+    /// </summary>
+    /// <param name="thisObject">The object containing the field being checked.</param>
+    /// <param name="fieldName">The name of the field being checked.</param>
+    /// <param name="enumerableObjectToCheck">The enumerable to check.</param>
+    /// <returns>True if the enumerable contains null values or is empty, false otherwise.</returns>
     public static bool ValidateCheckEnumerableValues(Object thisObject, string fieldName, IEnumerable enumerableObjectToCheck)
     {
         bool error = false;
